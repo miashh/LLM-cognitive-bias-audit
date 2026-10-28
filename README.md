@@ -3,7 +3,7 @@
 **Status: in progress.**
 
 ## Question
-(One short paragraph: what you tested and why it matters for businesses using AI to support decisions.)
+Large language models are increasingly used to support business decisions. People make predictable errors in judgement, such as being swayed by how a choice is framed (Tversky and Kahneman, 1981). This project tests whether language models show the same framing effect in consulting, technology, and finance scenarios, and whether adding a debiasing instruction to the prompt reduces it. For each scenario, I compare how often the model chooses the certain option when identical outcomes are described as gains versus losses.
 
 ## Method
 (Scenarios, how prompts differ between conditions, number of runs, models used, how answers were recorded.)
