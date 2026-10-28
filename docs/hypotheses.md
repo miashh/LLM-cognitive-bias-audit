@@ -1,5 +1,5 @@
 # Hypotheses
-(Written before running any experiments).
+(Written before running any experiments)
 
 ## Research question
 Do large language models show human cognitive biases in business decisions, and can prompting reduce them?
