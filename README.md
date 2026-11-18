@@ -110,7 +110,7 @@ With the baseline prompt, Qwen chose the risky option 89 to 96% of the time, wha
 Full tables, including every scenario and sector: [results/summary_table.md](results/summary_table.md). Raw replies: [results/](results/).
 
 ## What this means
-For these small models, the framing bias that worries people about human decision-makers was weak. When the models were asked to reason first, though, their recommendations were dominated by something more mundane: the order in which the options were presented. When the models were asked to reason first, though, their answers depended even more on which option was listed first. For anyone using AI to support decisions, it may be worth checking whether a recommendation changes when the options are swapped. Instructions to "think it through" shouldn't be assumed to make answers more reliable.
+For these small models, the framing bias that worries people about human decision-makers was weak. When the models were asked to reason first, though, their answers depended even more on which option was listed first. For anyone using AI to support decisions, it may be worth checking whether a recommendation changes when the options are swapped. Instructions to "think it through" shouldn't be assumed to make answers more reliable.
 
 ## Limitations
 - **Small models.** Both models have about 3 billion parameters. Larger models, such as those used in commercial products, may behave differently.
@@ -123,7 +123,7 @@ For these small models, the framing bias that worries people about human decisio
 - **The position finding is exploratory.** It was not a pre-registered hypothesis.
 - **Odds ratios near zero.** When a model almost never chooses an option (as Qwen did in the baseline), odds ratios can look large even when the difference in percentage points is small, so I report both.
 
-## What to do next:
+## Next steps
 - **Larger and commercial models**, to see whether the framing and order effects shrink with model size.
 - **Order effects directly:** test whether the order effect holds for other kinds of business decisions, and whether simple fixes such as asking the question twice in both orders remove it.
 - **People and AI together.** The bigger question is what happens when a person makes the decision with an AI's advice: does an order-sensitive recommendation change the person's choice? That would connect this project to my MSc research on keeping humans in the loop.
@@ -144,3 +144,6 @@ Everything runs locally and costs nothing.
 - Payne, K. (2025). [An analysis of AI decision under risk: Prospect theory emerges in large language models](https://arxiv.org/abs/2508.00902). arXiv.
 - Suri, G., et al. (2023). [Do large language models show decision heuristics similar to humans? A case study using GPT-3.5](https://arxiv.org/abs/2305.04400). arXiv.
 - Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. *Science*, 211(4481), 453-458.
+
+## Declaration of AI use
+Developed with assistance from Claude (Anthropic). Research question, hypotheses, and checking of results are my own.
