@@ -91,6 +91,35 @@ def pct(s):
     return f"{s.mean():.0%} ({int(s.sum())}/{len(s)})"
 
 
+def regression_row(model, condition, sub):
+    """Logistic regression: chose_certain ~ gain + listed_first + scenario fixed effects.
+    Returns one markdown table row with odds ratios, 95% CIs and p-values."""
+    import statsmodels.formula.api as smf
+    d = sub.copy()
+    d["gain"] = (d.frame == "gain").astype(int)
+    d["listed_first"] = (d.certain_first.astype(str).str.lower() == "true").astype(int)
+    varies = d.groupby("scenario").chose_certain.transform(lambda x: x.nunique() > 1)
+    dropped = d.loc[~varies, "scenario"].nunique()
+    d = d[varies]
+    if d.empty or d.scenario.nunique() < 1:
+        return f"| {model} | {condition} | n/a | | | n/a | | | 0 | {dropped} |"
+    formula = "chose_certain ~ gain + listed_first"
+    if d.scenario.nunique() > 1:
+        formula += " + C(scenario)"
+    try:
+        fit = smf.logit(formula, data=d).fit(disp=0, maxiter=200)
+    except Exception as e:  # e.g. perfect separation
+        return f"| {model} | {condition} | could not fit ({type(e).__name__}) | | | | | | {len(d)} | {dropped} |"
+    ci = fit.conf_int()
+    cells = []
+    for term in ("gain", "listed_first"):
+        orr = np.exp(fit.params[term])
+        lo, hi = np.exp(ci.loc[term, 0]), np.exp(ci.loc[term, 1])
+        cells += [f"{orr:.2f}", f"{lo:.2f} to {hi:.2f}", fmt_p(fit.pvalues[term])]
+    return (f"| {model} | {condition} | " + " | ".join(cells) +
+            f" | {len(d)} | {dropped} |")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pilot", action="store_true")
@@ -180,16 +209,33 @@ def main():
 
     # ---- Exploratory: option position (added after the pilot) ----
     L.append("\n## Exploratory: does the position of an option matter?\n")
-    L.append("If a model simply prefers whichever option is listed first, it chooses the certain "
-             "option far more often when it is Option 1. Position was balanced in every cell, so "
-             "this cannot create a framing gap, but it shows how much answers depend on layout.\n")
-    L.append("| Model | Prompt | Chose Option 1 | Certain option chosen when listed first | "
-             "Certain option chosen when listed second |")
-    L.append("|---|---|---|---|---|")
+    L.append("If a model prefers whichever option is listed first, it chooses the certain option "
+             "more often when it is Option 1. Position was balanced in every cell, so this cannot "
+             "create a framing gap, but it shows how much answers depend on layout. The position "
+             "effect is tested the same way as the framing effect (two-proportion z-test).\n")
+    L.append("| Model | Prompt | Chose Option 1 | Safe option chosen when listed first | "
+             "Safe option chosen when listed second | Position effect (pp) | 95% interval | p |")
+    L.append("|---|---|---|---|---|---|---|---|")
     for (m, c), sub in df.groupby(["model", "condition"]):
         first = sub.certain_first.astype(str).str.lower() == "true"
-        L.append(f"| {m} | {c} | {(sub.choice == 1).mean():.0%} | "
-                 f"{sub[first].chose_certain.mean():.0%} | {sub[~first].chose_certain.mean():.0%} |")
+        a, b = sub[first].chose_certain, sub[~first].chose_certain
+        d, lo, hi = gap_ci(a, b)
+        _, p = two_prop_z(a.sum(), len(a), b.sum(), len(b))
+        L.append(f"| {m} | {c} | {(sub.choice == 1).mean():.0%} | {pct(a)} | {pct(b)} | "
+                 f"{100*d:+.0f} | {100*lo:+.0f} to {100*hi:+.0f} | {fmt_p(p)} |")
+
+    # ---- Exploratory: one model for wording and position together ----
+    L.append("\n## Exploratory: wording and position in one model (logistic regression)\n")
+    L.append("For each model and prompt, a logistic regression predicts choosing the safe option "
+             "from the wording (gain vs loss) and the position (listed first vs second), with "
+             "scenario fixed effects. Odds ratios above 1 mean the safe option became more likely. "
+             "Scenarios where every answer was the same are left out, because they carry no "
+             "information about either effect.\n")
+    L.append("| Model | Prompt | Wording: gain vs loss (odds ratio) | 95% CI | p | "
+             "Position: first vs second (odds ratio) | 95% CI | p | Trials used | Scenarios left out |")
+    L.append("|---|---|---|---|---|---|---|---|---|---|")
+    for (m, c), sub in df.groupby(["model", "condition"]):
+        L.append(regression_row(m, c, sub))
 
     # ---- Unreadable replies ----
     L.append("\n## Unreadable replies (left out of the analysis)\n")

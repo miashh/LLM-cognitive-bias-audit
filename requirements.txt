@@ -2,6 +2,7 @@ ollama
 pandas
 numpy
 scipy
+statsmodels
 matplotlib
 # Only needed for the optional src/test_call.py (paid Anthropic API):
 anthropic
