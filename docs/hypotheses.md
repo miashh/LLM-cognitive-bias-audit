@@ -27,3 +27,11 @@ Differences between sectors (consulting, technology, finance) and between models
 To test whether any framing effect holds across different business contexts, rather than depending on one piece of wording, I added two more scenarios per sector, giving nine in total (three each for consulting, technology and finance). Every scenario uses the same numbers and sentence structure; only the business context changes.
 
 Nothing else changes: H1 and H2 are exactly as above, there are still around 30 runs per condition in each scenario, and sector differences remain exploratory. I also added two summaries: the result pooled across all nine scenarios, and a count of how many scenarios show a significant effect in the human direction. Results are compared with the original human result (Tversky and Kahneman, 1981: 72% chose the certain option with gain wording and 22% with loss wording).
+
+## Amendment 2 (November 2026, after the pilot and before the full runs)
+A pilot (4 runs per cell, 288 replies, not included in the results) showed two things:
+
+1. Some replies to the debiasing prompt were cut off before the final "Answer" line, because they hit the reply length limit. I raised the limit from 500 to 900 tokens for that prompt.
+2. With the debiasing prompt, both models chose whichever option was listed first much more often than the other. Option order was already balanced in every cell, so this cannot create a framing gap, but I added an exploratory table that reports it.
+
+The scenarios, the prompts, the hypotheses, the number of runs and the rule for unreadable replies are unchanged. I did not change anything to make a framing effect more likely to appear.

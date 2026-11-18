@@ -178,6 +178,19 @@ def main():
     for (m, c), sub in df.groupby(["model", "condition"]):
         L.append(f"- {m}, {c}: {n_sig.get((m, c), 0)} of {sub.scenario.nunique()}")
 
+    # ---- Exploratory: option position (added after the pilot) ----
+    L.append("\n## Exploratory: does the position of an option matter?\n")
+    L.append("If a model simply prefers whichever option is listed first, it chooses the certain "
+             "option far more often when it is Option 1. Position was balanced in every cell, so "
+             "this cannot create a framing gap, but it shows how much answers depend on layout.\n")
+    L.append("| Model | Prompt | Chose Option 1 | Certain option chosen when listed first | "
+             "Certain option chosen when listed second |")
+    L.append("|---|---|---|---|---|")
+    for (m, c), sub in df.groupby(["model", "condition"]):
+        first = sub.certain_first.astype(str).str.lower() == "true"
+        L.append(f"| {m} | {c} | {(sub.choice == 1).mean():.0%} | "
+                 f"{sub[first].chose_certain.mean():.0%} | {sub[~first].chose_certain.mean():.0%} |")
+
     # ---- Unreadable replies ----
     L.append("\n## Unreadable replies (left out of the analysis)\n")
     L.append("| Model | Prompt | Unreadable | Total |\n|---|---|---|---|")

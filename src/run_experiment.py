@@ -67,7 +67,7 @@ def ask_model(model, prompt, condition):
         model=model,
         messages=[{"role": "user", "content": prompt}],
         options={"temperature": TEMPERATURE,
-                 "num_predict": 20 if condition == "baseline" else 500},
+                 "num_predict": 20 if condition == "baseline" else 900},  # raised from 500 after the pilot
     )
     return resp["message"]["content"]
 
