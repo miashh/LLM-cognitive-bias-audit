@@ -22,3 +22,8 @@ Adding an instruction to consider the outcomes in both gain and loss terms befor
 
 ## Exploratory (not predicted)
 Differences between sectors (consulting, technology, finance) and between models. These will be reported as exploratory only.
+
+## Amendment (November 2026, before any experiment was run)
+To test whether any framing effect holds across different business contexts, rather than depending on one piece of wording, I added two more scenarios per sector, giving nine in total (three each for consulting, technology and finance). Every scenario uses the same numbers and sentence structure; only the business context changes.
+
+Nothing else changes: H1 and H2 are exactly as above, there are still around 30 runs per condition in each scenario, and sector differences remain exploratory. I also added two summaries: the result pooled across all nine scenarios, and a count of how many scenarios show a significant effect in the human direction. Results are compared with the original human result (Tversky and Kahneman, 1981: 72% chose the certain option with gain wording and 22% with loss wording).

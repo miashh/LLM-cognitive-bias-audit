@@ -1,5 +1,8 @@
-anthropic
-python-dotenv
+ollama
 pandas
+numpy
 scipy
 matplotlib
+# Only needed for the optional src/test_call.py (paid Anthropic API):
+anthropic
+python-dotenv
