@@ -123,7 +123,7 @@ For these small models, the framing bias that worries people about human decisio
 - **The position finding is exploratory.** It was not a pre-registered hypothesis.
 - **Odds ratios near zero.** When a model almost never chooses an option (as Qwen did in the baseline), odds ratios can look large even when the difference in percentage points is small, so I report both.
 
-## What I'd do next
+## What to do next:
 - **Larger and commercial models**, to see whether the framing and order effects shrink with model size.
 - **Order effects directly:** test whether the order effect holds for other kinds of business decisions, and whether simple fixes such as asking the question twice in both orders remove it.
 - **People and AI together.** The bigger question is what happens when a person makes the decision with an AI's advice: does an order-sensitive recommendation change the person's choice? That would connect this project to my MSc research on keeping humans in the loop.
