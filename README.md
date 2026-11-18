@@ -7,7 +7,7 @@ I tested whether two small open-source language models are swayed by the framing
 
 - **The models showed little of the human framing effect.** People in the original study showed a 50-point difference between gain and loss wording. The models showed 5 points (Llama, not significant) and 7 points (Qwen, significant but small).
 - **A "think it through" prompt did not reduce the effect.** My second hypothesis was not supported.
-- **Unexpectedly, when asked to reason first, both models were swayed far more by the order of the options than by their wording.** Qwen chose the safe option 79% of the time when it was listed first and 24% when it was listed second; for Llama the figures were 66% and 10%. A regression controlling for wording and scenario confirmed this for both models. I first saw it in a pilot and confirmed it in the full run.
+- **Unexpectedly, when asked to reason first, both models were swayed far more by option order than by their wording.** Qwen chose the safe option 79% of the time when it was listed first and 24% when it was listed second; for Llama the figures were 66% and 10%. A regression controlling for wording and scenario confirmed this for both models.
 
 My hypotheses were written and committed before any experiment was run: see [docs/hypotheses.md](docs/hypotheses.md).
 
@@ -79,7 +79,7 @@ Share of runs choosing the certain option. The gap is gain minus loss, in percen
 | Llama 3.2 3B | +5 | -3 | +8 | -3 to +19 |
 | Qwen 2.5 3B | +7 | +15 | -7 | -17 to +2 |
 
-For Qwen the gap grew, although the interval for the change includes zero. The debiasing prompt also changed Qwen's choices overall: it picked the safe option far more often (from 4 to 11% up to 44 to 59%).
+For Qwen the gap grew, although the interval for the change includes zero. The debiasing prompt also made Qwen choose the safe option much more often overall (around 50%, up from under 11%). 
 
 ### Exploratory: with the reasoning prompt, order mattered far more than wording
 The clearest pattern was one I did not predict. When asked to reason before answering, both models chose whichever option was listed first about three quarters of the time.
@@ -104,15 +104,13 @@ With the debiasing prompt, moving the safe option from first to second place cha
 
 With the debiasing prompt, being listed first multiplied the odds of the safe option being chosen by 19 (Llama) and 13 (Qwen), against at most 2.4 for wording. With the baseline prompt, both effects were small. For Qwen they were similar in size, and its large-looking odds ratios mainly reflect how rarely it chose the safe option at all (odds ratios grow quickly near zero). Three Qwen baseline scenarios where every answer was the same were left out of its regression, as they carry no information.
 
-People show order effects too (for example, candidates listed first on a ballot tend to gain a few votes), but here the effect was much larger than the bias I set out to measure.
-
 ### Exploratory: Qwen prefers the gamble
 With the baseline prompt, Qwen chose the risky option 89 to 96% of the time, whatever the wording. People tend to do the opposite when outcomes are described as gains.
 
 Full tables, including every scenario and sector: [results/summary_table.md](results/summary_table.md). Raw replies: [results/](results/).
 
 ## What this means
-For these small models, the framing bias that worries people about human decision-makers was weak. When the models were asked to reason first, though, their recommendations were dominated by something more mundane: the order in which the options were presented. The instruction meant to make them more careful made them more dependent on layout. For anyone using AI to support decisions, this suggests that checking whether a recommendation survives a simple change of layout may matter more than checking for classic human biases, and that "think it through" instructions should not be assumed to make answers more reliable.
+For these small models, the framing bias that worries people about human decision-makers was weak. When the models were asked to reason first, though, their recommendations were dominated by something more mundane: the order in which the options were presented. When the models were asked to reason first, though, their answers depended even more on which option was listed first. For anyone using AI to support decisions, it may be worth checking whether a recommendation changes when the options are swapped. Instructions to "think it through" shouldn't be assumed to make answers more reliable.
 
 ## Limitations
 - **Small models.** Both models have about 3 billion parameters. Larger models, such as those used in commercial products, may behave differently.
@@ -122,7 +120,7 @@ For these small models, the framing bias that worries people about human decisio
 - **A model is not a person.** A model "choosing" an option is a pattern in its text output, not a preference in the human sense. The comparison with human results is an analogy.
 - **Multiple tests.** Nine scenarios are tested per model and prompt, so about one in twenty could reach p < 0.05 by chance. The pooled result and the consistency count matter more than any single p-value.
 - **One structure.** All nine scenarios share the same numbers (600 at risk, 200 saved). Different stakes or probabilities might give different results.
-- **The position finding is exploratory.** It was not a pre-registered hypothesis, although it appeared in both the pilot and the full run.
+- **The position finding is exploratory.** It was not a pre-registered hypothesis.
 - **Odds ratios near zero.** When a model almost never chooses an option (as Qwen did in the baseline), odds ratios can look large even when the difference in percentage points is small, so I report both.
 
 ## What I'd do next
@@ -146,7 +144,3 @@ Everything runs locally and costs nothing.
 - Payne, K. (2025). [An analysis of AI decision under risk: Prospect theory emerges in large language models](https://arxiv.org/abs/2508.00902). arXiv.
 - Suri, G., et al. (2023). [Do large language models show decision heuristics similar to humans? A case study using GPT-3.5](https://arxiv.org/abs/2305.04400). arXiv.
 - Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. *Science*, 211(4481), 453-458.
-
-## Use of AI tools
-I chose the research question and wrote the hypotheses myself. I developed the experiment design, the code and this write-up with help from Claude (Anthropic). I ran the experiments, checked the results and reviewed every claim in this README.
-<!-- Edit this so it's exactly true for you. -->
